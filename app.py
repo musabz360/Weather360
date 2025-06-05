@@ -48,33 +48,38 @@ def getliveTemp(latitude, longitude):
     if response.status_code != 200:
         print(f"Error: API request failed with status code {response.status_code}")
         return None
-    
-    # Parse the JSON response
+      # Parse the JSON response
     data = response.json()
     
-    # Print formatted current weather data
-    print("\n=== Current Weather ===")
-    for key, value in data['current'].items():
-        print(f"{key.replace('_', ' ').title()}: {value}")
+    # Format the data into a clean structure
+    formatted_data = {
+        'current': data['current'],
+        'hourly': {},
+        'daily': {}
+    }
     
-    # Print hourly forecast for today
-    print("\n=== Today's Hourly Forecast ===")
+    # Format hourly data for today
     current_date = data['hourly']['time'][0].split('T')[0]
+    today_hourly = {}
     for i, time in enumerate(data['hourly']['time']):
         if current_date in time:
             hour = time.split('T')[1]
-            print(f"\nTime: {hour}")
+            hour_data = {}
             for key in data['hourly'].keys():
                 if key != 'time':
-                    print(f"{key.replace('_', ' ').title()}: {data['hourly'][key][i]}")
+                    hour_data[key] = data['hourly'][key][i]
+            today_hourly[hour] = hour_data
+    formatted_data['hourly'] = today_hourly
     
-    # Print daily forecast summary
-    print("\n=== 7-Day Forecast ===")
+    # Format daily data
+    daily_forecast = {}
     for i, date in enumerate(data['daily']['time']):
-        print(f"\nDate: {date}")
+        day_data = {}
         for key in data['daily'].keys():
             if key != 'time':
-                print(f"{key.replace('_', ' ').title()}: {data['daily'][key][i]}")
+                day_data[key] = data['daily'][key][i]
+        daily_forecast[date] = day_data
+    formatted_data['daily'] = daily_forecast
+    return formatted_data
 
-    return data
 
