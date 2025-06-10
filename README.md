@@ -68,3 +68,15 @@ Returns a dictionary containing:
 - Requests
 - OpenMeteo API
 
+
+
+## Example Queries
+1. What’s the weather like right now in Dallas, TX?
+2. How’s the weekly forecast looking for London?
+3. What’s the UV index in Delhi today?
+4. What will the weather be like hourly in Hyderabad on June 10, 2025?
+
+
+
+
+
